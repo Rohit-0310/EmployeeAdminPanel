@@ -63,7 +63,19 @@ namespace EmployeeAdminPanel.Controllers
             return Ok(employee);
         }
 
-        
+        [HttpDelete("{id}")]
+        public IActionResult DeleteEmployee(Guid id)
+        {
+            var employee = dbContext.Employees.FirstOrDefault(e => e.Id == id);
+            if(employee == null)
+            {
+                return NotFound("Employee Not Foumd....");
+            }
+
+            dbContext.Employees.Remove(employee);
+            dbContext.SaveChanges();
+            return NoContent(); //204 No Content - Standard for DELETE
+        }
 
 
     }
