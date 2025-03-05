@@ -38,5 +38,33 @@ namespace EmployeeAdminPanel.Controllers
             dbContext.SaveChanges();
             return Ok(employeeEntity);
         }
+
+        [HttpPatch("{id}")]
+        public IActionResult UpdateEmployee(Guid id, [FromBody] UpdateEmployeedto updateEmployee)
+        {
+            var employee = dbContext.Employees.FirstOrDefault(e => e.Id == id);
+            if (employee == null)
+            {
+                return NotFound("Employee Not Found....");
+            }
+            if(!string.IsNullOrEmpty(updateEmployee.Name))
+                employee.Name = updateEmployee.Name;
+
+            if(!string.IsNullOrEmpty (updateEmployee.Email))
+                employee.Email = updateEmployee.Email;
+
+            if(!string.IsNullOrEmpty(updateEmployee.Phone))
+                employee.Phone = updateEmployee.Phone;
+
+            if(updateEmployee.Salary.HasValue)
+                employee.Salary = updateEmployee.Salary.Value;
+
+            dbContext.SaveChanges();
+            return Ok(employee);
+        }
+
+        
+
+
     }
 }
